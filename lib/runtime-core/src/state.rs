@@ -743,9 +743,13 @@ pub mod x64 {
 
     pub fn build_instance_image(
         vmctx: &mut Ctx,
-        execution_state: ExecutionStateImage,
+        _execution_state: ExecutionStateImage,
     ) -> InstanceImage {
         unsafe {
+            // execution state vec![]
+            let state: Vec<WasmFunctionStateDump> = vec![];
+            let es = ExecutionStateImage { frames: state };
+
             let memory = if vmctx.internal.memory_base.is_null() {
                 None
             } else {
@@ -771,7 +775,7 @@ pub mod x64 {
             InstanceImage {
                 memory: memory,
                 globals: globals,
-                execution_state: execution_state,
+                execution_state: es,
             }
         }
     }
